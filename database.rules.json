@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "settings": {
+      ".read": true,
+      ".write": "auth != null && auth.uid == 'k4tiiV7xg6QNIWbmG2UrfQ4K0gi2'"
+    },
+    "votes": {
+      ".read": "auth != null && (root.child('settings/closed').val() == true || auth.uid == 'PASTE_ADMIN_UID')",
+      "$uid": {
+        ".write": "auth != null && auth.uid == $uid && !data.exists() && root.child('settings/closed').val() != true",
+        ".validate": "newData.hasChildren(['color', 'createdAt']) && (newData.child('color').val() == 'hitam' || newData.child('color').val() == 'navy' || newData.child('color').val() == 'cream')"
+      }
+    }
+  }
+}

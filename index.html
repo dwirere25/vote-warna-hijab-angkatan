@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07152e">
+  <title>Vote Hijab | Angkatan 39 SMAN 3 Bojonegoro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#"><img src="assets/logo-39.jpg" alt="Logo 39"><span>ANGKATAN <b>39</b><small>SMAN 3 BOJONEGORO</small></span></a>
+    <button class="admin-link" id="openAdmin">Panel panitia ↗</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> COLOR POLL · ANGKATAN 39</p>
+        <h1>ONE CLASS.<br><span>ONE STYLE.</span></h1>
+        <p class="hero-desc">Bantu tentukan warna hijab yang paling cocok dipadukan dengan kaos Angkatan 39. Pilih favoritmu, suaramu ikut menentukan!</p>
+        <div class="hero-actions"><a class="primary-btn" href="#vote">Pilih warna <span>↓</span></a><span class="live-note"><i></i> Voting bersama angkatan</span></div>
+      </div>
+      <div class="hero-art">
+        <div class="art-ring"></div><img class="mascot" src="assets/maskot-39.png" alt="Maskot elang Angkatan 39">
+        <div class="art-label"><span>EST.</span><b>39</b><small>RISE AS ONE</small></div>
+      </div>
+    </section>
+
+    <section class="shirt-section section-wrap">
+      <div class="section-heading"><div><p class="eyebrow">THE MERCH</p><h2>Kenali desain kaosnya.</h2></div><p>Warna dasar navy dengan identitas biru dan emas Angkatan 39.</p></div>
+      <div class="shirt-card"><img src="assets/kaos-angkatan39.jpg" alt="Referensi kaos Angkatan 39"><div class="shirt-caption"><span>ANGKATAN 39</span><b>ASTRANAWA TRIGATRA</b><small>Referensi desain kaos dari panitia</small></div></div>
+    </section>
+
+    <section id="vote" class="vote-section section-wrap">
+      <div class="section-heading"><div><p class="eyebrow">MAKE YOUR PICK</p><h2>Warna hijab pilihanmu?</h2></div><p>Pilih satu warna yang menurutmu paling serasi.</p></div>
+      <div class="option-grid">
+        <button class="color-card" data-color="hitam" aria-pressed="false">
+          <div class="swatch swatch-black"><span>01</span><b>BLACK</b></div><div class="option-info"><h3>Hitam</h3><p>Klasik · netral · tegas</p><span class="choose-label">Pilih warna <b>↗</b></span></div>
+        </button>
+        <button class="color-card" data-color="navy" aria-pressed="false">
+          <div class="swatch swatch-navy"><span>02</span><b>NAVY</b></div><div class="option-info"><h3>Navy</h3><p>Senada · kompak · elegan</p><span class="choose-label">Pilih warna <b>↗</b></span></div>
+        </button>
+        <button class="color-card" data-color="cream" aria-pressed="false">
+          <div class="swatch swatch-cream"><span>03</span><b>CREAM</b></div><div class="option-info"><h3>Cream / Biskuit</h3><p>Hangat · kontras · manis</p><span class="choose-label">Pilih warna <b>↗</b></span></div>
+        </button>
+      </div>
+      <div class="preview-panel">
+        <div class="preview-copy"><p class="eyebrow">STYLE PREVIEW</p><h3>Mix & match dulu.</h3><p>Pratinjau warna membantu membayangkan kombinasi hijab dengan kaos navy.</p><div class="preview-selected"><span id="selectedDot"></span><b id="selectedName">Belum memilih</b></div></div>
+        <div class="outfit-preview"><div class="hijab-shape" id="hijabShape"><span></span></div><div class="mini-shirt"><div>ASTRANAWA<br>TRIGATRA</div></div><span class="preview-tag">NAVY TEE + HIJAB</span></div>
+      </div>
+      <div class="vote-action"><div><b id="voteStatus">Belum ada pilihan</b><p id="voteHint">Ketuk salah satu warna untuk memilih.</p></div><button class="primary-btn" id="submitVote" disabled>Kirim suara <span>→</span></button></div>
+      <p class="privacy-note"><span>ⓘ</span> Demo voting sederhana: satu suara per browser/perangkat. Hasil lengkap disembunyikan sampai panitia menutup voting. Mode demo lokal tidak tersinkron antarperangkat; aktifkan Firebase untuk voting online.</p>
+      <div class="notice" id="notice" role="status"></div>
+    </section>
+
+    <section class="results-section section-wrap" id="resultsSection">
+      <div class="section-heading"><div><p class="eyebrow">THE COUNTDOWN</p><h2>Suara angkatan.</h2></div><span class="status-pill" id="publicStatus"><i></i> Menunggu hasil final</span></div>
+      <div class="locked-results" id="lockedResults"><div class="lock-icon">⌁</div><h3>Hasil sedang dirahasiakan</h3><p>Grafik dan jumlah suara akan dibuka setelah panitia menutup voting. No spoiler dulu 🤫</p></div>
+      <div class="results-card hidden" id="resultsCard"><div class="results-top"><div><p class="eyebrow">HASIL FINAL</p><h3>Warna pilihan Angkatan 39</h3></div><div class="total-count"><b id="totalVotes">0</b><span>total suara</span></div></div><div id="resultBars" class="result-bars"></div><div class="winner-banner" id="winnerBanner"></div></div>
+    </section>
+  </main>
+
+  <footer><div class="footer-brand">39<span> / </span>SMAN 3 BOJONEGORO</div><p>One class. One voice. One style.</p><button class="text-button" id="openAdminFooter">Akses panitia</button></footer>
+
+  <div class="modal-backdrop hidden" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <div class="admin-modal"><button class="close-modal" id="closeAdmin" aria-label="Tutup">×</button><p class="eyebrow">RESTRICTED ACCESS</p><h2 id="adminTitle">Panel panitia.</h2><p class="modal-desc">Masuk dengan akun admin Firebase untuk membuka hasil, mengatur voting, dan memantau jumlah suara.</p>
+      <form id="adminLoginForm" class="admin-form"><label>Email admin<input id="adminEmail" type="email" placeholder="panitia@email.com" required autocomplete="username"></label><label>Password<input id="adminPassword" type="password" placeholder="Password admin" required autocomplete="current-password"></label><button class="primary-btn" type="submit">Masuk panel →</button></form>
+      <div class="admin-dashboard hidden" id="adminDashboard"><div class="admin-stats"><div><span>Total suara</span><b id="adminTotal">0</b></div><div><span>Status</span><b id="adminState">Dibuka</b></div></div><div class="admin-buttons"><button class="primary-btn" id="toggleVoting">Tutup voting & buka hasil</button><button class="secondary-btn" id="reopenVoting">Buka voting lagi</button></div><p class="admin-help">Saat voting ditutup, hasil final akan terlihat oleh semua pengunjung. Membuka kembali voting akan menyembunyikan hasil lagi.</p><button class="text-button" id="adminLogout">Keluar dari akun admin</button></div>
+      <p class="notice" id="adminNotice" role="status"></p>
+    </div>
+  </div>
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
